@@ -35,16 +35,27 @@ class Settings(BaseSettings):
         ),
     )
 
-    # --- Provider de LLM externo ---
-    anthropic_api_key: str = Field(
-        default="",
+    # --- Provider de LLM externo (Ollama Cloud, tier gratuito) ---
+    ollama_host: str = Field(
+        default="https://ollama.com",
         description=(
-            "Chave da API da Anthropic, usada pelo provider "
-            "external_llm. Vazia em ambientes onde o LLM não é "
-            "chamado (ex: alguns testes)."
+            "URL base do Ollama. Aponta para o Ollama Cloud por padrão "
+            "(tier Free, sem custo); pode apontar para uma instância "
+            "local (ex: http://localhost:11434) em desenvolvimento."
         ),
     )
-    anthropic_model: str = Field(default="claude-haiku-4-5-20251001")
+    ollama_api_key: str = Field(
+        default="",
+        description=(
+            "Chave da API do Ollama Cloud, usada pelo provider "
+            "external_llm. Vazia quando ollama_host aponta para uma "
+            "instância local, que não exige autenticação."
+        ),
+    )
+    ollama_model: str = Field(
+        default="gpt-oss:20b",
+        description="Modelo nível 1 (leve), dentro da cota do tier Free.",
+    )
 
     @property
     def is_production(self) -> bool:

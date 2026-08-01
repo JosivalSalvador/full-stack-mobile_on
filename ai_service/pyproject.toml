@@ -6,12 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.18.5",
-    "anthropic>=0.120.2",
     "asyncpg>=0.31.0",
     "fastapi>=0.140.0",
+    "ollama>=0.6.2",
     "pydantic-settings>=2.14.2",
     "sqlalchemy[asyncio]>=2.0.51",
     "sqlmodel>=0.0.39",
+    "structlog>=26.1.0",
     "uvicorn>=0.51.0",
     "zxcvbn>=4.5.0",
 ]
@@ -24,3 +25,31 @@ dev = [
     "respx>=0.23.1",
     "ruff>=0.16.0",
 ]
+
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # Sintaxe e estilo PEP 8
+    "F",     # Variáveis/imports não usados e erros básicos
+    "I",     # Ordenação de imports
+    "B",     # Prevenção de bugs comuns
+    "UP",    # Atualiza sintaxe para Python 3.12+
+    "N",     # Nomenclatura PEP 8
+    "FAST",  # Boas práticas para FastAPI
+    "RUF",   # Regras nativas do Ruff
+]
+ignore = [
+    "B008",  # Permite usar Depends() nos parâmetros do FastAPI
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
