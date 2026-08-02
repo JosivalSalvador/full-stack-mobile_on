@@ -20,8 +20,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "mypy>=2.3.0",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
     "respx>=0.23.1",
     "ruff>=0.16.0",
 ]
@@ -54,10 +56,23 @@ quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
 
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = "."
+explicit_package_bases = true
 
+[[tool.mypy.overrides]]
+module = "zxcvbn.*"
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 # Layout "flat" (app/ direto na raiz, não dentro de src/): garante que
 # `import app...` funciona independente de como pytest é invocado.
 pythonpath = ["."]
 asyncio_mode = "auto"
+addopts = "--cov=app --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["app"]

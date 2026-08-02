@@ -41,9 +41,10 @@ async def client(
     app.dependency_overrides[get_db_session] = override_get_db_session
 
     transport = httpx.ASGITransport(app=app)
-    async with httpx.AsyncClient(
-        transport=transport, base_url="http://test"
-    ) as async_client:
+    async with (
+        app.router.lifespan_context(app),
+        httpx.AsyncClient(transport=transport, base_url="http://test") as async_client,
+    ):
         yield async_client
 
     app.dependency_overrides.clear()

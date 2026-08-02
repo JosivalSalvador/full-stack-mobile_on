@@ -19,6 +19,6 @@ async def is_database_healthy(session: AsyncSession) -> bool:
     """Confirma que `session` consegue executar uma query simples."""
     try:
         await session.execute(text("SELECT 1"))
-    except SQLAlchemyError:
+    except (SQLAlchemyError, OSError):
         return False
     return True
