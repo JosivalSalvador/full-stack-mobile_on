@@ -1,0 +1,57 @@
+# Compose de DESENVOLVIMENTO: sobe apenas a infraestrutura de apoio
+# (bancos de dados) que backend e ai_service precisam para rodar.
+#
+# Os serviços de aplicação (backend, ai_service) NÃO sobem aqui — em
+# dev, rodam direto na máquina (`go run`, `uv run uvicorn`) para ter
+# reload instantâneo, sem esperar rebuild de imagem a cada mudança.
+#
+# "Database per service": cada serviço tem seu próprio banco e
+# usuário, mesmo compartilhando o mesmo container Postgres físico.
+
+name: keymory_on
+
+services:
+  postgres_dev:
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    environment:
+      # Usado apenas para o Postgres aceitar subir; o backend e o
+      # ai_service se conectam com os usuários criados no init.sql,
+      # não com este superusuário.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      # A partir do Postgres 18, o volume de dados é montado em
+      # /var/lib/postgresql (sem o antigo sufixo /data).
+      - postgres_dev_data:/var/lib/postgresql
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  postgres_test:
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_test_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql
+      - ./infra/postgres_test/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_dev_data:
+  postgres_test_data:

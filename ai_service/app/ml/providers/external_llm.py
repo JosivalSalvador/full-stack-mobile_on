@@ -84,7 +84,7 @@ class ExternalLLMProvider(Provider[LLMExplanationRequest, str]):
                     {"role": "user", "content": prompt},
                 ],
             )
-        except (ollama.ResponseError, httpx.HTTPError) as exc:
+        except (ollama.ResponseError, httpx.HTTPError, ConnectionError) as exc:
             logger.error("llm_provider_call_failed", provider=self.name, error=str(exc))
             raise LLMProviderError(f"Falha ao chamar {self.name}: {exc}") from exc
 

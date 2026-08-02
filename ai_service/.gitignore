@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Segredos locais — nunca commitados (ver .env.example para o molde).
+.env
+
+# Cache de ferramentas
+.ruff_cache/
+.pytest_cache/

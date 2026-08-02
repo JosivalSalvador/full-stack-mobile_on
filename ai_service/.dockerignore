@@ -1,0 +1,22 @@
+# Ambiente virtual e cache — reconstruídos dentro da imagem via uv,
+# nunca copiados do host.
+.venv/
+__pycache__/
+*.pyc
+.ruff_cache/
+.pytest_cache/
+
+# Testes não fazem parte da imagem de produção.
+tests/
+integration_test/
+
+# Segredos e configuração local — nunca vão para dentro da imagem.
+.env
+
+# Controle de versão e metadados de editor.
+.git/
+.gitignore
+.vscode/
+
+# Documentação: não é necessária para rodar o serviço.
+README.md

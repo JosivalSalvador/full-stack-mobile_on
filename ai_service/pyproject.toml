@@ -53,3 +53,11 @@ combine-as-imports = true
 quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
+
+
+
+[tool.pytest.ini_options]
+# Layout "flat" (app/ direto na raiz, não dentro de src/): garante que
+# `import app...` funciona independente de como pytest é invocado.
+pythonpath = ["."]
+asyncio_mode = "auto"
