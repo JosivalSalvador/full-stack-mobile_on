@@ -17,7 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db_session
 from app.main import app
 from app.ml.model_loader import get_external_llm, get_local_model
-from tests.conftest import FakeExternalLLM, FakeLocalModel
+from tests.unit.conftest import FakeExternalLLM, FakeLocalModel
 
 
 @pytest_asyncio.fixture

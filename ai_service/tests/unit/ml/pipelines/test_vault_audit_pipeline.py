@@ -8,7 +8,7 @@ coberto em test_local_model.py e test_external_llm.py).
 
 from app.ml.pipelines.vault_audit_pipeline import audit_vault, audit_vault_item
 from app.ml.providers.external_llm import LLMExplanationRequest, LLMProviderError
-from tests.conftest import FakeExternalLLM, FakeLocalModel
+from tests.unit.conftest import FakeExternalLLM, FakeLocalModel
 
 
 class FailingExternalLLM(FakeExternalLLM):

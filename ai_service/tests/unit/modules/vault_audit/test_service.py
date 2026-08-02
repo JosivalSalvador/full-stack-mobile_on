@@ -10,7 +10,7 @@ from app.modules.vault_audit.models import VaultItemAuditRecord
 from app.modules.vault_audit.repositories.repository import VaultAuditRepository
 from app.modules.vault_audit.schemas import VaultAuditRequest, VaultItemInput
 from app.modules.vault_audit.service import VaultAuditService
-from tests.conftest import FakeExternalLLM, FakeLocalModel
+from tests.unit.conftest import FakeExternalLLM, FakeLocalModel
 
 
 class FakeVaultAuditRepository(VaultAuditRepository):
