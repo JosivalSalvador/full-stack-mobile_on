@@ -20,15 +20,12 @@ fato, continua válido; a explicação em texto fica ausente nesse item.
 from dataclasses import dataclass
 
 from app.core.logging import get_logger
+from app.ml.providers.base import Provider
 from app.ml.providers.external_llm import (
-    ExternalLLMProvider as ExternalLLMType,
     LLMExplanationRequest,
     LLMProviderError,
 )
-from app.ml.providers.local_model import (
-    LocalPasswordModel as LocalModelType,
-    PasswordStrengthResult,
-)
+from app.ml.providers.local_model import PasswordStrengthResult
 
 logger = get_logger(__name__)
 
@@ -48,8 +45,8 @@ async def audit_vault_item(
     item_id: str,
     password: str,
     *,
-    local_model: LocalModelType,
-    external_llm: ExternalLLMType,
+    local_model: Provider[str, PasswordStrengthResult],
+    external_llm: Provider[LLMExplanationRequest, str],
 ) -> VaultItemAudit:
     """Audita uma única senha do vault, combinando os dois providers.
 
@@ -86,8 +83,8 @@ async def audit_vault_item(
 async def audit_vault(
     items: dict[str, str],
     *,
-    local_model: LocalModelType,
-    external_llm: ExternalLLMType,
+    local_model: Provider[str, PasswordStrengthResult],
+    external_llm: Provider[LLMExplanationRequest, str],
 ) -> list[VaultItemAudit]:
     """Audita todas as senhas de `items` (item_id -> senha).
 

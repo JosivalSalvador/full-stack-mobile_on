@@ -76,5 +76,25 @@ class TestExternalLLMProvider:
         with pytest.raises(LLMProviderError):
             await provider.run(request_data)
 
+    @respx.mock
+    async def test_empty_response_content_raises_llm_provider_error(
+        self, request_data: LLMExplanationRequest
+    ) -> None:
+        respx.post(OLLAMA_CHAT_URL).mock(
+            return_value=httpx.Response(
+                200,
+                json={
+                    "model": "gpt-oss:20b",
+                    "message": {"role": "assistant", "content": None},
+                    "done": True,
+                },
+            )
+        )
+
+        provider = ExternalLLMProvider()
+
+        with pytest.raises(LLMProviderError):
+            await provider.run(request_data)
+
     def test_provider_name(self) -> None:
         assert ExternalLLMProvider().name == "external_ollama"

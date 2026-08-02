@@ -15,8 +15,9 @@ from datetime import UTC, datetime
 
 from app.core.logging import get_logger
 from app.ml.pipelines.vault_audit_pipeline import audit_vault
-from app.ml.providers.external_llm import ExternalLLMProvider
-from app.ml.providers.local_model import LocalPasswordModel
+from app.ml.providers.base import Provider
+from app.ml.providers.external_llm import LLMExplanationRequest
+from app.ml.providers.local_model import PasswordStrengthResult
 from app.modules.vault_audit.models import VaultItemAuditRecord
 from app.modules.vault_audit.repositories.repository import VaultAuditRepository
 from app.modules.vault_audit.schemas import (
@@ -34,8 +35,8 @@ class VaultAuditService:
     def __init__(
         self,
         repository: VaultAuditRepository,
-        local_model: LocalPasswordModel,
-        external_llm: ExternalLLMProvider,
+        local_model: Provider[str, PasswordStrengthResult],
+        external_llm: Provider[LLMExplanationRequest, str],
     ) -> None:
         self._repository = repository
         self._local_model = local_model

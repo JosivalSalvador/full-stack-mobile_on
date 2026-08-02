@@ -8,6 +8,7 @@ router) depende apenas da interface em `repository.py`.
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import col
 
 from app.modules.vault_audit.models import VaultItemAuditRecord
 from app.modules.vault_audit.repositories.repository import VaultAuditRepository
@@ -31,8 +32,8 @@ class SqlVaultAuditRepository(VaultAuditRepository):
     async def list_by_user(self, user_id: str) -> list[VaultItemAuditRecord]:
         statement = (
             select(VaultItemAuditRecord)
-            .where(VaultItemAuditRecord.user_id == user_id)
-            .order_by(VaultItemAuditRecord.audited_at.desc())
+            .where(col(VaultItemAuditRecord.user_id) == user_id)
+            .order_by(col(VaultItemAuditRecord.audited_at).desc())
         )
         result = await self._session.execute(statement)
         return list(result.scalars().all())

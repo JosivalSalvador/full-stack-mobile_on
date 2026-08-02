@@ -88,4 +88,9 @@ class ExternalLLMProvider(Provider[LLMExplanationRequest, str]):
             logger.error("llm_provider_call_failed", provider=self.name, error=str(exc))
             raise LLMProviderError(f"Falha ao chamar {self.name}: {exc}") from exc
 
-        return response.message.content.strip()
+        content = response.message.content
+        if content is None:
+            logger.error("llm_provider_empty_response", provider=self.name)
+            raise LLMProviderError(f"Resposta vazia de {self.name}")
+
+        return content.strip()

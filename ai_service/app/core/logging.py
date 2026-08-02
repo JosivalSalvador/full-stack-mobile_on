@@ -13,6 +13,7 @@ saiam no mesmo formato dos logs escritos pelo próprio serviço.
 
 import logging
 import sys
+from typing import cast
 
 import structlog
 
@@ -80,4 +81,4 @@ def get_logger(name: str = "") -> structlog.stdlib.BoundLogger:
         logger = get_logger(__name__)
         logger.info("vault_audit_started", user_id=user_id, item_count=80)
     """
-    return structlog.get_logger(name)
+    return cast(structlog.stdlib.BoundLogger, structlog.get_logger(name))
