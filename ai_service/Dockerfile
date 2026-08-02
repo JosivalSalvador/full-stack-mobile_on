@@ -11,13 +11,9 @@ ENV UV_COMPILE_BYTECODE=1 \
 
 WORKDIR /app
 
-# Copiado antes do código-fonte: se só o código mudar (não as
-# dependências), esta camada de cache é reaproveitada.
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-dev
-
+# Copiados antes do código-fonte: se só o código mudar (não as
+# dependências), esta camada de cache é reaproveitada em rebuilds.
+COPY pyproject.toml uv.lock ./
 COPY app ./app
 COPY alembic ./alembic
 COPY alembic.ini ./
