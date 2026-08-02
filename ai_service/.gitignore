@@ -15,3 +15,4 @@ wheels/
 # Cache de ferramentas
 .ruff_cache/
 .pytest_cache/
+.coverage

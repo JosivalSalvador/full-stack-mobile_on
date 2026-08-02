@@ -72,7 +72,7 @@ ignore_missing_imports = true
 # `import app...` funciona independente de como pytest é invocado.
 pythonpath = ["."]
 asyncio_mode = "auto"
-addopts = "--cov=app --cov-report=term-missing"
+addopts = "--cov=app --cov-report=term-missing --cov-branch"
 
 [tool.coverage.run]
 source = ["app"]
