@@ -12,9 +12,12 @@ from contextlib import asynccontextmanager
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import col, select
 
 from app.ml import model_loader
+from app.modules.vault_audit.models import VaultItemAuditRecord
 from app.workers.background_tasks import reaudit_vault_on_leak_update
+from tests.unit.conftest import FakeExternalLLM, FakeLocalModel
 
 
 @pytest.fixture(autouse=True)
@@ -38,7 +41,9 @@ def _use_test_session(
 
 @pytest.fixture(autouse=True)
 def _load_fake_providers(
-    monkeypatch: pytest.MonkeyPatch, fake_local_model, fake_external_llm
+    monkeypatch: pytest.MonkeyPatch,
+    fake_local_model: FakeLocalModel,
+    fake_external_llm: FakeExternalLLM,
 ) -> None:
     """Faz `get_local_model()`/`get_external_llm()` (chamados dentro
     da tarefa) devolverem os fakes, em vez de exigir
@@ -52,10 +57,6 @@ class TestReauditVaultOnLeakUpdate:
     async def test_updates_dictionary_and_persists_new_audit(
         self, test_db_session: AsyncSession
     ) -> None:
-        from sqlalchemy import select
-
-        from app.modules.vault_audit.models import VaultItemAuditRecord
-
         await reaudit_vault_on_leak_update(
             user_id="worker-user",
             items={"a": "123456", "b": "outrasenha"},
@@ -64,7 +65,7 @@ class TestReauditVaultOnLeakUpdate:
 
         result = await test_db_session.execute(
             select(VaultItemAuditRecord).where(
-                VaultItemAuditRecord.user_id == "worker-user"
+                col(VaultItemAuditRecord.user_id) == "worker-user"
             )
         )
         records = result.scalars().all()
