@@ -8,24 +8,28 @@ dependencies = [
     "alembic>=1.18.5",
     "asyncpg>=0.31.0",
     "fastapi>=0.140.0",
+    "numpy>=2.5.1",
     "ollama>=0.6.2",
+    "onnxruntime>=1.28.0",
     "pydantic-settings>=2.14.2",
     "sqlalchemy[asyncio]>=2.0.51",
     "sqlmodel>=0.0.39",
     "structlog>=26.1.0",
     "uvicorn>=0.51.0",
-    "zxcvbn>=4.5.0",
 ]
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
     "mypy>=2.3.0",
+    "pandas>=3.0.5",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "pytest-cov>=7.1.0",
     "respx>=0.23.1",
     "ruff>=0.16.0",
+    "scikit-learn>=1.9.0",
+    "skl2onnx>=1.20.0",
 ]
 
 
@@ -66,10 +70,6 @@ plugins = ["pydantic.mypy"]
 mypy_path = "."
 explicit_package_bases = true
 exclude = ["alembic/versions/"]
-
-[[tool.mypy.overrides]]
-module = "zxcvbn.*"
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 # Layout "flat" (app/ direto na raiz, não dentro de src/): garante que
