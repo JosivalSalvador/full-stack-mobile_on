@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col, select
 
 from app.ml import model_loader
-from app.modules.vault_audit.models import VaultItemAuditRecord
+from ai_service.app.domain.vault_audit.models import VaultItemAuditRecord
 from app.workers.background_tasks import reaudit_vault_on_leak_update
 from tests.unit.conftest import FakeExternalLLM, FakeLocalModel
 

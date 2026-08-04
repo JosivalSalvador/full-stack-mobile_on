@@ -13,15 +13,15 @@ horizontalmente, esta função é o ponto de partida a substituir por uma
 fila de verdade — o corpo da tarefa (chamar o service) não muda.
 """
 
-from app.core.database import db_session_context
+from ai_service.app.core.db import db_session_context
 from app.core.logging import get_logger
 from app.ml.model_loader import get_external_llm, get_local_model
 from app.ml.train import update_leaked_passwords_dictionary
 from app.modules.vault_audit.repositories.repository_impl import (
     SqlVaultAuditRepository,
 )
-from app.modules.vault_audit.schemas import VaultAuditRequest, VaultItemInput
-from app.modules.vault_audit.service import VaultAuditService
+from ai_service.app.domain.vault_audit.schemas import VaultAuditRequest, VaultItemInput
+from ai_service.app.domain.vault_audit.service import VaultAuditService
 
 logger = get_logger(__name__)
 

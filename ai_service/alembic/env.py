@@ -24,7 +24,7 @@ from app.core.config import get_settings
 
 # Importa cada `models.py` do projeto para que suas tabelas sejam
 # registradas em `SQLModel.metadata` antes do autogenerate rodar.
-from app.modules.vault_audit.models import VaultItemAuditRecord  # noqa: F401
+from ai_service.app.domain.vault_audit.models import VaultItemAuditRecord  # noqa: F401
 
 config = context.config
 

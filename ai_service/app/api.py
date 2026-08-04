@@ -7,7 +7,7 @@ registrar seu router aqui, e em nenhum outro lugar.
 
 from fastapi import APIRouter
 
-from app.modules.vault_audit.router import router as vault_audit_router
+from ai_service.app.domain.vault_audit.router import router as vault_audit_router
 
 api_router = APIRouter()
 api_router.include_router(vault_audit_router)
