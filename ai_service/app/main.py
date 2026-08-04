@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from ai_service.app.api.v1.api import api_router
-from ai_service.app.core.db import db_session_context
+from ai_service.app.core.database import db_session_context
 from app.core.logging import configure_logging, get_logger
 from app.ml.model_loader import load_providers
 from app.repositories.data_access import is_database_healthy
