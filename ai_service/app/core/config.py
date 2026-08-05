@@ -92,3 +92,4 @@ def get_settings() -> Settings:
     o mesmo objeto.
     """
     return Settings()
+
