@@ -5,8 +5,6 @@ estimativa de consumo de tokens) que não pertencem à lógica de negócio
 de um módulo específico em app/modules/.
 """
 
-from __future__ import annotations
-
 import re
 from dataclasses import dataclass
 

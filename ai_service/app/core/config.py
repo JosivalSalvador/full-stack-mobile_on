@@ -57,6 +57,27 @@ class Settings(BaseSettings):
         description="Modelo nível 1 (leve), dentro da cota do tier Free.",
     )
 
+    # --- Segurança da própria API ---
+    # Defesa em profundidade: este serviço só deveria ser alcançado
+    # pelo backend Go, dentro da rede interna do Docker, nunca exposto
+    # diretamente à internet. A API key confirma que quem chama é o
+    # backend de fato, não substitui autenticação do usuário final
+    # (essa é responsabilidade do backend Go).
+    api_key: str = Field(
+        description=(
+            "Chave secreta compartilhada com o backend Go, enviada no "
+            "header X-API-Key em toda chamada."
+        ),
+    )
+    rate_limit_requests: int = Field(
+        default=100,
+        description="Máximo de requisições aceitas por identificador na janela.",
+    )
+    rate_limit_window_seconds: int = Field(
+        default=60,
+        description="Duração da janela de contagem do rate limit, em segundos.",
+    )
+
     @property
     def is_production(self) -> bool:
         return self.environment == "production"

@@ -5,7 +5,6 @@ tokens) que não pertencem a nenhum módulo de domínio específico e
 evitam duplicação entre app/modules/*.
 """
 
-from __future__ import annotations
 
 from pydantic import BaseModel, Field
 

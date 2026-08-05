@@ -6,8 +6,6 @@ de AIServiceError, permitindo que a camada HTTP (app/api/) capture um
 conhecer cada exceção específica.
 """
 
-from __future__ import annotations
-
 
 class AIServiceError(Exception):
     """Exceção base de todo o ai_service.
@@ -31,9 +29,7 @@ class ModelNotReadyError(AIServiceError):
     ou se o carregamento falhou silenciosamente.
     """
 
-    def __init__(
-        self, message: str = "O modelo de ML ainda não está pronto."
-    ) -> None:
+    def __init__(self, message: str = "O modelo de ML ainda não está pronto.") -> None:
         super().__init__(message, error_code="model_not_ready")
 
 
@@ -71,3 +67,28 @@ class ItemNotFoundError(AIServiceError):
 
     def __init__(self, message: str = "Item do vault não encontrado.") -> None:
         super().__init__(message, error_code="item_not_found")
+
+
+class InvalidAPIKeyError(AIServiceError):
+    """A API key enviada em X-API-Key está ausente ou não confere.
+
+    Levantada por app/core/security.py. A chamada só chega aqui vinda
+    do backend Go (única porta de entrada da rede interna); esta
+    checagem existe como defesa em profundidade, não como
+    autenticação de usuário final.
+    """
+
+    def __init__(self, message: str = "API key ausente ou inválida.") -> None:
+        super().__init__(message, error_code="invalid_api_key")
+
+
+class RateLimitExceededError(AIServiceError):
+    """O identificador de chamada excedeu o limite de requisições na
+    janela de tempo configurada.
+
+    Levantada por app/core/security.py, a partir do limitador em
+    memória (sem Redis).
+    """
+
+    def __init__(self, message: str = "Limite de requisições excedido.") -> None:
+        super().__init__(message, error_code="rate_limit_exceeded")
