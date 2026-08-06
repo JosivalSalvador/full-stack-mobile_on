@@ -61,6 +61,11 @@ class Settings(BaseSettings):
     rate_limit_max_requests: int = 100
     rate_limit_window_seconds: int = 60
 
+    # --- Modelo de ML ---
+    # Caminho para o .onnx gerado por scripts/train.py, relativo à raiz
+    # do ai_service (funciona igual local e dentro do container).
+    model_path: str = "model.onnx"
+
     @property
     def is_production(self) -> bool:
         """Atalho usado por security.py e main.py para decisões que
